@@ -1,0 +1,19 @@
+{
+  "name": "@luxuryescapes/lib-db",
+  "version": "0.0.1",
+  "description": "DB scripts",
+  "main": "index.js",
+  "bin": {
+    "lib-db": "./bin/cli.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "repository": "git@github.com:brandsExclusive/lib-db.git",
+  "author": "Chris Nguyen <chris.nguyen@luxuryescapes.com>",
+  "license": "UNLICENSED",
+  "private": false,
+  "dependencies": {
+    "shelljs": "^0.8.3"
+  }
+}
