@@ -2,6 +2,8 @@
 
 const shell = require('shelljs')
 const path = require('path')
+const fs = require('fs')
+const ini = require('ini')
 
 process.on('unhandledRejection', err => {
   throw err
@@ -27,8 +29,22 @@ if (!commandReference) {
   process.exit(1)
 }
 
+let env = {
+  ...process.env
+}
+
+const pathToConfig = path.resolve('.lib-db.config')
+
+if (fs.existsSync(pathToConfig)) {
+  console.log('Found config at', pathToConfig)
+  const config = ini.parse(fs.readFileSync(pathToConfig, 'utf-8'))
+  if (config) {
+    env = {...env, ...config}
+  }
+}
+
 const pathToScript = path.resolve(__dirname, '..', commandReference.script)
 
-shell.exec(`${pathToScript} ${args.slice(1).join(' ')}`, function(code, stdout, stderr) {
+shell.exec(`${pathToScript} ${args.slice(1).join(' ')}`, { env }, function(code, stdout, stderr) {
   process.exit(code)
 })
