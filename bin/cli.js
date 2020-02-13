@@ -12,6 +12,15 @@ process.on('unhandledRejection', err => {
 const VALID_COMMANDS = [{
   name: 'heroku-pull-test',
   script: './heroku/db-pull-test.sh'
+}, {
+  name: 'heroku-pull-prod',
+  script: './heroku/db-pull-prod.sh'
+}, {
+  name: 'snapshot',
+  script: './db-snapshot.sh'
+}, {
+  name: 'snapshot-restore',
+  script: './db-snapshot-restore.sh'
 }]
 
 const args = process.argv.slice(2)
@@ -43,7 +52,7 @@ if (fs.existsSync(pathToConfig)) {
   }
 }
 
-const pathToScript = path.resolve(__dirname, '..', commandReference.script)
+const pathToScript = path.resolve(__dirname, '..', 'scripts', commandReference.script)
 
 shell.exec(`${pathToScript} ${args.slice(1).join(' ')}`, { env }, function(code, stdout, stderr) {
   process.exit(code)
