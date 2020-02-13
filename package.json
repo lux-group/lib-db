@@ -1,6 +1,6 @@
 {
   "name": "@luxuryescapes/lib-db",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "DB scripts",
   "main": "index.js",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "files": [
     "bin",
-    "heroku"
+    "scripts"
   ],
   "repository": "git@github.com:brandsExclusive/lib-db.git",
   "author": "Chris Nguyen <chris.nguyen@luxuryescapes.com>",
