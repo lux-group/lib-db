@@ -44,4 +44,25 @@ It will pull down the database from the heroku app named `test-svc-users` into a
 
 You can omit the arguments if you have `APP_NAME` and `TEST_HEROKU_APP_NAME` defined in your `.lib-db.config` file
 
+### heroku-pull-prod
 
+`lib-db heroku-pull-prod <app_name> <heroku_app_name>`
+
+This script just prints an error at the moment
+
+
+### snapshot
+
+`lib-db snapshot <app_name>`
+
+Will snapshot your db named `<app_name>_development` into `<app_name>_development_snapshot`
+
+You can omit the argument if you have `APP_NAME` defined in your `.lib-db.config` file
+
+### snapshot-restore
+
+`lib-db snapshot-restore <app_name>`
+
+Will restore your snapshot in `<app_name>_development_snapshot` into `<app_name>_development`
+
+You can omit the argument if you have `APP_NAME` defined in your `.lib-db.config` file
