@@ -24,7 +24,7 @@ then
 fi
 
 dropdb --if-exists $pg_options "${app}_development" 
-createdb -T $pg_options "${app}_development_snapshot" "${app}_development"
+createdb $pg_options -T "${app}_development_snapshot" "${app}_development"
 
 echo -e "${GREEN}We've restored ${app}_development from ${app}_development_snapshot.${NO_COLOR}"
 
