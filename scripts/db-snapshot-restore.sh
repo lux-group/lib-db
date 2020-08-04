@@ -2,8 +2,8 @@
 set -e
 
 app=${1:-$APP_NAME}
-dev_pg_port=${3:-${PGPORT:-"5432"}}
-pg_options="--port $dev_pg_port"
+dev_pg_port=${PGPORT:-"5432"}
+pg_options="--port=$dev_pg_port"
 
 NO_COLOR='\033[0m'
 GREEN='\033[0;32m'
