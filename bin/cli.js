@@ -51,6 +51,7 @@ if (env.DATABASE_URL) {
     PGHOST: dbConfig.host,
     PGPORT: dbConfig.port,
   }
+  console.log(`Targeting dev database from DATABASE_URL: ${env.PGHOST}:${env.PGPORT}`)
 }
 
 const pathToConfig = path.resolve('.lib-db.config')
