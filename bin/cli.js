@@ -4,6 +4,8 @@ const shell = require('shelljs')
 const path = require('path')
 const fs = require('fs')
 const ini = require('ini')
+const parseDbUrl = require('parse-database-url')
+const parseDatabaseUrl = require('parse-database-url')
 
 process.on('unhandledRejection', err => {
   throw err
@@ -11,16 +13,16 @@ process.on('unhandledRejection', err => {
 
 const VALID_COMMANDS = [{
   name: 'heroku-pull-test',
-  script: './heroku/db-pull-test.sh [HOST] [PORT]'
+  script: './heroku/db-pull-test.sh'
 }, {
   name: 'heroku-pull-prod',
-  script: './heroku/db-pull-prod.sh [HOST] [PORT]'
+  script: './heroku/db-pull-prod.sh'
 }, {
   name: 'snapshot',
-  script: './db-snapshot.sh [HOST] [PORT]'
+  script: './db-snapshot.sh'
 }, {
   name: 'snapshot-restore',
-  script: './db-snapshot-restore.sh [HOST] [PORT]'
+  script: './db-snapshot-restore.sh'
 }]
 
 const args = process.argv.slice(2)
@@ -40,6 +42,15 @@ if (!commandReference) {
 
 let env = {
   ...process.env
+}
+
+if (env.DATABASE_URL) {
+  dbConfig = parseDatabaseUrl(env.DATABASE_URL)
+  env = {
+    ...env,
+    PGHOST: dbConfig.host,
+    PGPORT: dbConfig.port,
+  }
 }
 
 const pathToConfig = path.resolve('.lib-db.config')

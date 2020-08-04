@@ -3,8 +3,8 @@ set -e
 
 app=${1:-$APP_NAME}
 heroku_app=${2:-$TEST_HEROKU_APP_NAME}
-devpghost=${3:-${PGHOST:-"localhost"}}
-devpgport=${4:-${PGPORT:-"5432"}}
+devpghost=${PGHOST:-"localhost"}
+devpgport=${PGPORT:-"5432"}
 pgoptions="--host $devpghost --port $devpgport"
 
 NO_COLOR='\033[0m'
