@@ -4,7 +4,7 @@ const shell = require('shelljs')
 const path = require('path')
 const fs = require('fs')
 const ini = require('ini')
-const parseDbUrl = require('parse-database-url')
+require('dotenv').config()
 const parseDatabaseUrl = require('parse-database-url')
 
 process.on('unhandledRejection', err => {
@@ -43,6 +43,7 @@ if (!commandReference) {
 let env = {
   ...process.env
 }
+console.log(env)
 
 if (env.DATABASE_URL) {
   dbConfig = parseDatabaseUrl(env.DATABASE_URL)
