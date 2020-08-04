@@ -43,16 +43,14 @@ if (!commandReference) {
 let env = {
   ...process.env
 }
-console.log(env)
 
 if (env.DATABASE_URL) {
   dbConfig = parseDatabaseUrl(env.DATABASE_URL)
   env = {
     ...env,
-    PGHOST: dbConfig.host,
     PGPORT: dbConfig.port,
   }
-  console.log(`Targeting dev database from DATABASE_URL: ${env.PGHOST}:${env.PGPORT}`)
+  console.log(`Using port from DATABASE_URL: ${env.PGPORT}`)
 }
 
 const pathToConfig = path.resolve('.lib-db.config')

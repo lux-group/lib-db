@@ -3,9 +3,7 @@ set -e
 
 app=${1:-$APP_NAME}
 heroku_app=${2:-$TEST_HEROKU_APP_NAME}
-devpghost=${PGHOST:-"localhost"}
-devpgport=${PGPORT:-"5432"}
-pgoptions="--host $devpghost --port $devpgport"
+dev_pg_port=${PGPORT:-"5432"}
 
 NO_COLOR='\033[0m'
 GREEN='\033[0;32m'
@@ -26,10 +24,10 @@ if [ -z "$heroku_app" ]
 fi
 
 echo -e "${GREEN}Dropping ${app}_development...${NO_COLOR}"
-dropdb --if-exists $pgoptions "${app}_development"
+dropdb --if-exists --port $dev_pg_port "${app}_development"
 
 echo -e "${GREEN}Pulling test DB from ${heroku_app} to ${app}_development${NO_COLOR}"
-heroku pg:pull DATABASE_URL "postgresql://@$devpghost:$devpgport/${app}_development" --app $heroku_app
+heroku pg:pull DATABASE_URL "postgresql://@localhost:$dev_pg_port/${app}_development" --app $heroku_app
 
 echo -e "${GREEN}We just pulled the test DB to ${app}_development
 
