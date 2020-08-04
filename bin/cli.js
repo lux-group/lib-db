@@ -11,16 +11,16 @@ process.on('unhandledRejection', err => {
 
 const VALID_COMMANDS = [{
   name: 'heroku-pull-test',
-  script: './heroku/db-pull-test.sh'
+  script: './heroku/db-pull-test.sh [HOST] [PORT]'
 }, {
   name: 'heroku-pull-prod',
-  script: './heroku/db-pull-prod.sh'
+  script: './heroku/db-pull-prod.sh [HOST] [PORT]'
 }, {
   name: 'snapshot',
-  script: './db-snapshot.sh'
+  script: './db-snapshot.sh [HOST] [PORT]'
 }, {
   name: 'snapshot-restore',
-  script: './db-snapshot-restore.sh'
+  script: './db-snapshot-restore.sh [HOST] [PORT]'
 }]
 
 const args = process.argv.slice(2)

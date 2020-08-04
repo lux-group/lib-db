@@ -2,6 +2,9 @@
 set -e
 
 app=${1:-$APP_NAME}
+devpghost=${2:-${PGHOST:-"localhost"}}
+devpgport=${3:-${PGPORT:-"5432"}}
+pgoptions="--host $devpghost --port $devpgport"
 
 NO_COLOR='\033[0m'
 GREEN='\033[0;32m'
@@ -14,8 +17,8 @@ if [ -z "$app" ]
     exit 1
 fi
 
-dropdb --if-exists "${app}_development_snapshot"
-createdb -T "${app}_development" "${app}_development_snapshot"
+dropdb --if-exists $pgoptions "${app}_development_snapshot" 
+createdb -T --host $pgoptions "${app}_development" "${app}_development_snapshot"
 
 echo -e "${GREEN}We've made a copy of ${app}_development at ${app}_development_snapshot.
 You can restore it with yarn db:snapshot:restore${NO_COLOR}"

@@ -2,6 +2,9 @@
 set -e
 
 app=${1:-$APP_NAME}
+devpghost=${2:-${PGHOST:-"localhost"}}
+devpgport=${3:-${PGPORT:-"5432"}}
+pgoptions="--host $devpghost --port $devpgport"
 
 NO_COLOR='\033[0m'
 GREEN='\033[0;32m'
@@ -21,7 +24,7 @@ then
   exit 1
 fi
 
-dropdb --if-exists "${app}_development"
+dropdb --if-exists "${app}_development" 
 createdb -T "${app}_development_snapshot" "${app}_development"
 
 echo -e "${GREEN}We've restored ${app}_development from ${app}_development_snapshot.${NO_COLOR}"
