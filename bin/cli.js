@@ -53,8 +53,6 @@ if (env.DATABASE_URL) {
   console.log(`Using port from DATABASE_URL: ${env.PGPORT}`)
 }
 
-console.log(env.PGPORT)
-
 const pathToConfig = path.resolve('.lib-db.config')
 
 if (fs.existsSync(pathToConfig)) {
