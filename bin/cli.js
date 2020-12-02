@@ -48,10 +48,12 @@ if (env.DATABASE_URL) {
   dbConfig = parseDatabaseUrl(env.DATABASE_URL)
   env = {
     ...env,
-    PGPORT: dbConfig.port,
+    PGPORT: dbConfig.port || 5432,
   }
   console.log(`Using port from DATABASE_URL: ${env.PGPORT}`)
 }
+
+console.log(env.PGPORT)
 
 const pathToConfig = path.resolve('.lib-db.config')
 
