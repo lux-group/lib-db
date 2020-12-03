@@ -4,6 +4,8 @@ const shell = require('shelljs')
 const path = require('path')
 const fs = require('fs')
 const ini = require('ini')
+require('dotenv').config()
+const parseDatabaseUrl = require('parse-database-url')
 
 process.on('unhandledRejection', err => {
   throw err
@@ -40,6 +42,15 @@ if (!commandReference) {
 
 let env = {
   ...process.env
+}
+
+if (env.DATABASE_URL) {
+  dbConfig = parseDatabaseUrl(env.DATABASE_URL)
+  env = {
+    ...env,
+    PGPORT: dbConfig.port || 5432,
+  }
+  console.log(`Using port from DATABASE_URL: ${env.PGPORT}`)
 }
 
 const pathToConfig = path.resolve('.lib-db.config')
