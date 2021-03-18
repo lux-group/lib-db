@@ -50,7 +50,42 @@ You can omit the arguments if you have `APP_NAME` and `TEST_HEROKU_APP_NAME` def
 
 This script just prints an error at the moment
 
+### create
 
+`lib-db create <app_name>`
+
+Will create your db named `<app_name>_development`
+
+You can omit the argument if you have `APP_NAME` defined in your `.lib-db.config` file
+
+If you want to create a db for a different environment use the env var `APP_ENV`
+
+e.g running `APP_ENV=spec lib-db create my_app` will create a db named `my_app_spec`
+
+### drop
+
+`lib-db drop <app_name>`
+
+Will drop your db named `<app_name>_development`
+
+You can omit the argument if you have `APP_NAME` defined in your `.lib-db.config` file
+
+If you want to drop a db for a different environment use the env var `APP_ENV`
+
+e.g running `APP_ENV=spec lib-db drop my_app` will drop a db named `my_app_spec`
+
+### schema
+
+`lib-db schema <app_name>`
+
+Will export the schema of db named `<app_name>_development` to `repo/schema.sql`
+
+You can omit the argument if you have `APP_NAME` defined in your `.lib-db.config` file
+
+If you want to export the schema for a db for a different environment use the env var `APP_ENV`
+
+e.g running `APP_ENV=spec lib-db schema my_app` will export the schema from the db named `my_app_spec`
+Alternatively you can define a different location using the `REPO_DIRECTORY`  in your `.lib-db.config` file
 ### snapshot
 
 `lib-db snapshot <app_name>`
@@ -66,3 +101,14 @@ You can omit the argument if you have `APP_NAME` defined in your `.lib-db.config
 Will restore your snapshot in `<app_name>_development_snapshot` into `<app_name>_development`
 
 You can omit the argument if you have `APP_NAME` defined in your `.lib-db.config` file
+
+
+### migrate-create
+
+`lib-db migrate-create <migration_name> <app_name>`
+
+This will create a migration sql file. By default it will put it in the `migrations` folder within the `repo` folder which is relative to where you ran the command
+Alternatively you can define a different location using the `REPO_DIRECTORY`  in your `.lib-db.config` file
+
+You can omit the app_name argument if you have `APP_NAME` defined in your `.lib-db.config` file
+
