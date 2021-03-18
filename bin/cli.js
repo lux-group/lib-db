@@ -23,6 +23,18 @@ const VALID_COMMANDS = [{
 }, {
   name: 'snapshot-restore',
   script: './db-snapshot-restore.sh'
+}, {
+  name: 'migrate-create',
+  script: './db-migrate-create.sh'
+}, {
+  name: 'create',
+  script: './db-create.sh'
+}, {
+  name: 'drop',
+  script: './db-drop.sh'
+}, {
+  name: 'schema',
+  script: './db-schema.sh'
 }]
 
 const args = process.argv.slice(2)
@@ -59,7 +71,7 @@ if (fs.existsSync(pathToConfig)) {
   console.log('Found config at', pathToConfig)
   const config = ini.parse(fs.readFileSync(pathToConfig, 'utf-8'))
   if (config) {
-    env = {...env, ...config}
+    env = {...config, ...env}
   }
 }
 
