@@ -2,10 +2,10 @@
 set -e
 
 app=${1:-$APP_NAME}
+db_container=${3:-$DB_CONTAINER}
 environment=${APP_ENV:-development}
-repoDirectory=${REPO_DIRECTORY:-repo}
-dev_pg_port=${PGPORT:-"5432"}
-pg_options="--port=$dev_pg_port"
+repo_directory=${REPO_DIRECTORY:-repo}
+export_location=${repo_directory}/schema.sql
 
 NO_COLOR='\033[0m'
 GREEN='\033[0;32m'
@@ -23,7 +23,6 @@ if [ -z "$DB" ]
     DB="${app}_${environment}"
 fi
 
-pg_dump $pg_options \
-  --schema-only \
-  --no-owner \
-  $DB > ${repoDirectory}/schema.sql
+docker exec -e PGUSER=postgres $db_container pg_dump "${app}_development" --schema-only --no-owner > $export_location
+
+echo -e "${GREEN}We've exported the db schema of ${app}_development to $export_location"
