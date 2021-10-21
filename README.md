@@ -1,6 +1,6 @@
 # lib-db
 
-Common database scripts
+Common database scripts. These scripts require a postgres db container to be running. You can start these here [infra-le-local-dev](https://github.com/lux-group/infra-le-local-dev)
 
 ## Installation
 
@@ -16,6 +16,7 @@ This file format should be key value like below
 ```
 APP_NAME=my_app
 TEST_HEROKU_APP_NAME=my_heroku_app_name
+DB_CONTAINER=postgres13
 ```
 
 ## Usage

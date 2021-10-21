@@ -3,7 +3,7 @@ set -e
 
 app=${1:-$APP_NAME}
 heroku_app=${2:-$TEST_HEROKU_APP_NAME}
-dev_pg_port=${PGPORT:-"5432"}
+db_container=${3:-$DB_CONTAINER}
 
 NO_COLOR='\033[0m'
 GREEN='\033[0;32m'
@@ -24,10 +24,13 @@ if [ -z "$heroku_app" ]
 fi
 
 echo -e "${GREEN}Dropping ${app}_development...${NO_COLOR}"
-dropdb --if-exists --port $dev_pg_port "${app}_development"
+docker exec -e PGUSER=postgres $db_container dropdb "${app}_development" --if-exists
 
 echo -e "${GREEN}Pulling test DB from ${heroku_app} to ${app}_development${NO_COLOR}"
-heroku pg:pull DATABASE_URL "postgresql://@localhost:$dev_pg_port/${app}_development" --app $heroku_app
+echo -e "This will copy your .netrc to the docker container to allow it to connect to heroku"
+
+docker cp ~/.netrc $db_container:/root
+docker exec -e PGUSER=postgres $db_container heroku pg:pull DATABASE_URL "${app}_development" --app $heroku_app
 
 echo -e "${GREEN}We just pulled the test DB to ${app}_development
 
