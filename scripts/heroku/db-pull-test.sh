@@ -4,6 +4,7 @@ set -e
 app=${1:-$APP_NAME}
 heroku_app=${2:-$TEST_HEROKU_APP_NAME}
 db_container=${3:-$DB_CONTAINER}
+strategy=${4:-$STRATEGY}
 
 NO_COLOR='\033[0m'
 GREEN='\033[0;32m'
@@ -30,7 +31,19 @@ echo -e "${GREEN}Pulling test DB from ${heroku_app} to ${app}_development${NO_CO
 echo -e "This will copy your .netrc to the docker container to allow it to connect to heroku"
 
 docker cp ~/.netrc $db_container:/root
-docker exec -e PGUSER=postgres $db_container heroku pg:pull DATABASE_URL "${app}_development" --app $heroku_app
+
+if [ "$STRATEGY" == "logical-backup" ]
+  then
+    docker exec -e PGUSER=postgres $db_container heroku pg:backups:capture --app $heroku_app
+    docker exec -e PGUSER=postgres $db_container heroku pg:backups:download --app $heroku_app
+    docker exec -e PGUSER=postgres $db_container createdb "${app}_development"
+    docker exec -e PGUSER=postgres $db_container pg_restore --verbose --clean --no-acl --no-owner --dbname="${app}_development" latest.dump
+fi
+
+if [ "$STRATEGY" == "pull" ] || [ "$STRATEGY" == "" ]
+  then
+    docker exec -e PGUSER=postgres $db_container heroku pg:pull DATABASE_URL "${app}_development" --app $heroku_app
+fi
 
 echo -e "${GREEN}We just pulled the test DB to ${app}_development
 
