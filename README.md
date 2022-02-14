@@ -19,7 +19,11 @@ This file format should be key value like below
 APP_NAME=my_app
 TEST_HEROKU_APP_NAME=my_heroku_app_name
 DB_CONTAINER=postgres13
+STRATEGY=pull
 ```
+
+Available strategies are `pull` (default) and `logical-backup` for larger
+databases.
 
 ## Usage
 
