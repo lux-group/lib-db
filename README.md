@@ -7,7 +7,7 @@ Common database scripts. These scripts require a postgres db container to be run
 See [example PR](https://github.com/lux-group/svc-payment/pull/524/files), or follow instructions below:
 
 ```sh
-yarn add @luxuryescapes/lib-db
+yarn add -D @luxuryescapes/lib-db
 ```
 
 ## Configuration
