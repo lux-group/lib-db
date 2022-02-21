@@ -15,6 +15,12 @@ const VALID_COMMANDS = [{
   name: 'heroku-pull-test',
   script: './heroku/db-pull-test.sh'
 }, {
+  name: 'heroku-restore-test',
+  script: './heroku/db-restore-test.sh'
+}, {
+  name: 'heroku-backup-test',
+  script: './heroku/db-backup-test.sh'
+}, {
   name: 'heroku-pull-prod',
   script: './heroku/db-pull-prod.sh'
 }, {
@@ -71,12 +77,12 @@ if (fs.existsSync(pathToConfig)) {
   console.log('Found config at', pathToConfig)
   const config = ini.parse(fs.readFileSync(pathToConfig, 'utf-8'))
   if (config) {
-    env = {...config, ...env}
+    env = { ...config, ...env }
   }
 }
 
 const pathToScript = path.resolve(__dirname, '..', 'scripts', commandReference.script)
 
-shell.exec(`${pathToScript} ${args.slice(1).join(' ')}`, { env }, function(code, stdout, stderr) {
+shell.exec(`${pathToScript} ${args.slice(1).join(' ')}`, { env }, function (code, stdout, stderr) {
   process.exit(code)
 })

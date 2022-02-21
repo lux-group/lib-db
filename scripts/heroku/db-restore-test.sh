@@ -12,29 +12,29 @@ RED='\033[0;31m'
 if [ -z "$app" ]
   then
     echo -e "${RED}No app_name provided${NO_COLOR}"
-    echo "Usage: lib-db heroku-pull-test app_name heroku_app_name"
+    echo "Usage: lib-db heroku-restore-test app_name heroku_app_name"
     exit 1
 fi
 
 if [ -z "$heroku_app" ]
   then
     echo -e "${RED}No heroku_app_name provided${NO_COLOR}"
-    echo "Usage: lib-db heroku-pull-test app_name heroku_app_name"
+    echo "Usage: lib-db heroku-restore-test app_name heroku_app_name"
     exit 1
 fi
 
 echo -e "${GREEN}Dropping ${app}_development...${NO_COLOR}"
 docker exec -e PGUSER=postgres $db_container dropdb "${app}_development" --if-exists
 
-echo -e "${GREEN}Pulling test DB from ${heroku_app} to ${app}_development${NO_COLOR}"
 echo -e "This will copy your .netrc to the docker container to allow it to connect to heroku"
 
 docker cp ~/.netrc $db_container:/root
 
-docker exec -e PGUSER=postgres $db_container heroku pg:pull DATABASE_URL "${app}_development" --app $heroku_app
+echo -e "${GREEN}Restoring backup of ${heroku_app} to ${db_container}"
 
-echo -e "${GREEN}We just pulled the test DB to ${app}_development
+docker exec -e PGUSER=postgres $db_container createdb "${app}_development"
+docker exec -e PGUSER=postgres $db_container pg_restore --verbose --clean --no-acl --no-owner --dbname="${app}_development" latest.dump
 
-You might like to run yarn db:snapshot, so you can later restore this fresh test DB without re-downloading it."
+echo -e "${GREEN}We just restored the test DB to ${app}_development from a local backup"
 
 exit 0

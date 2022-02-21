@@ -39,6 +39,8 @@ Easiest way is to use in your repository's npm scripts
 
 ### heroku-pull-test
 
+Note: If the DB you are backing up is large, please consider using the [heroku-backup-test](#heroku-backup-test) & [heroku-restore-test](#heroku-restore-test) commands instead.
+
 `lib-db heroku-pull-test <app_name> <heroku_app_name>`
 
 This script will pull down the database from the specified heroku app into a database called `<app_name>_development`
@@ -56,6 +58,20 @@ You can omit the arguments if you have `APP_NAME` and `TEST_HEROKU_APP_NAME` def
 `lib-db heroku-pull-prod <app_name> <heroku_app_name>`
 
 This script just prints an error at the moment
+
+### <a name="heroku-backup-test"></a> heroku-backup-test
+
+`lib-db heroku-backup-test <app_name> <heroku_app_name>`
+This script will download a backup of the database from the specified heroku app. it can optionally also create a new backup in the remote environment by adding the following to `.lib-db.config`;
+
+```
+STRATEGY=backup
+```
+
+### <a name="heroku-restore-test"></a> heroku-restore-test
+
+`lib-db heroku-restore-test <app_name> <heroku_app_name>`
+This script will restore a backup of the database of the specified heroku app that is stored in your local container. Please run `heroku-backup-test` first to download the backup.
 
 ### create
 
@@ -92,7 +108,8 @@ You can omit the argument if you have `APP_NAME` defined in your `.lib-db.config
 If you want to export the schema for a db for a different environment use the env var `APP_ENV`
 
 e.g running `APP_ENV=spec lib-db schema my_app` will export the schema from the db named `my_app_spec`
-Alternatively you can define a different location using the `REPO_DIRECTORY`  in your `.lib-db.config` file
+Alternatively you can define a different location using the `REPO_DIRECTORY` in your `.lib-db.config` file
+
 ### snapshot
 
 `lib-db snapshot <app_name>`
@@ -109,13 +126,11 @@ Will restore your snapshot in `<app_name>_development_snapshot` into `<app_name>
 
 You can omit the argument if you have `APP_NAME` defined in your `.lib-db.config` file
 
-
 ### migrate-create
 
 `lib-db migrate-create <migration_name> <app_name>`
 
 This will create a migration sql file. By default it will put it in the `migrations` folder within the `repo` folder which is relative to where you ran the command
-Alternatively you can define a different location using the `REPO_DIRECTORY`  in your `.lib-db.config` file
+Alternatively you can define a different location using the `REPO_DIRECTORY` in your `.lib-db.config` file
 
 You can omit the app_name argument if you have `APP_NAME` defined in your `.lib-db.config` file
-

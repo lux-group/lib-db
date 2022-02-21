@@ -1,6 +1,6 @@
 {
   "name": "@luxuryescapes/lib-db",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "DB scripts",
   "main": "index.js",
   "bin": {
