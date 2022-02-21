@@ -13,14 +13,14 @@ RED='\033[0;31m'
 if [ -z "$app" ]
   then
     echo -e "${RED}No app_name provided${NO_COLOR}"
-    echo "Usage: lib-db heroku-pull-test app_name heroku_app_name"
+    echo "Usage: lib-db heroku-backup-test app_name heroku_app_name"
     exit 1
 fi
 
 if [ -z "$heroku_app" ]
   then
     echo -e "${RED}No heroku_app_name provided${NO_COLOR}"
-    echo "Usage: lib-db heroku-pull-test app_name heroku_app_name"
+    echo "Usage: lib-db heroku-backup-test app_name heroku_app_name"
     exit 1
 fi
 
