@@ -1,6 +1,6 @@
 {
   "name": "@luxuryescapes/lib-db",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "DB scripts",
   "main": "index.js",
   "bin": {
@@ -18,6 +18,6 @@
     "dotenv": "^8.2.0",
     "ini": "^1.3.5",
     "parse-database-url": "^0.3.0",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.5"
   }
 }
