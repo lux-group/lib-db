@@ -23,18 +23,18 @@ if [ -z "$heroku_app" ]
     exit 1
 fi
 
-echo -e "${GREEN}Dropping ${app}_development...${NO_COLOR}"
-docker exec -e PGUSER=postgres $db_container dropdb "${app}_development" --if-exists
-
 echo -e "This will copy your .netrc to the docker container to allow it to connect to heroku"
 
 docker cp ~/.netrc $db_container:/root
 
-echo -e "${GREEN}Restoring backup of ${heroku_app} to ${db_container}"
+echo -e "${GREEN}Dropping ${app}_development...${NO_COLOR}"
+docker exec -e PGUSER=postgres $db_container dropdb "${app}_development" --if-exists
+
+echo -e "${GREEN}Restoring backup of ${heroku_app} to ${db_container}${NO_COLOR}"
 
 docker exec -e PGUSER=postgres $db_container createdb "${app}_development"
 docker exec -e PGUSER=postgres $db_container pg_restore --verbose --clean --no-acl --no-owner --dbname="${app}_development" latest.dump
 
-echo -e "${GREEN}We just restored the test DB to ${app}_development from a local backup"
+echo -e "${GREEN}We just restored the test DB to ${app}_development from a local backup${NO_COLOR}"
 
 exit 0

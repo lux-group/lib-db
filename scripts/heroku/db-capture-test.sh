@@ -27,10 +27,7 @@ echo -e "This will copy your .netrc to the docker container to allow it to conne
 
 docker cp ~/.netrc $db_container:/root
 
-docker exec $db_container rm -f latest.dump
-
-echo -e "${GREEN}Downloading up test DB from ${heroku_app} to ${db_container}"
-docker exec -e PGUSER=postgres $db_container heroku pg:backups:download --app $heroku_app
-echo -e "${GREEN}We just downloaded a backup of ${heroku_app} locally to ${db_container}. If the backup is not recent enough, change your STRATEGY to backup."
+echo -e "${GREEN}Creating a backup for download from ${heroku_app}"
+docker exec -e PGUSER=postgres $db_container heroku pg:backups:capture --app $heroku_app
 
 exit 0
