@@ -19,11 +19,7 @@ This file format should be key value like below
 APP_NAME=my_app
 TEST_HEROKU_APP_NAME=my_heroku_app_name
 DB_CONTAINER=postgres13
-STRATEGY=pull
 ```
-
-Available strategies are `pull` (default) and `logical-backup` for larger
-databases.
 
 ## Usage
 
@@ -39,7 +35,7 @@ Easiest way is to use in your repository's npm scripts
 
 ### heroku-pull-test
 
-Note: If the DB you are backing up is large, please consider using the [heroku-backup-test](#heroku-backup-test) & [heroku-restore-test](#heroku-restore-test) commands instead.
+Note: If the DB you are backing up is large, please consider using the [heroku-capture-test](#heroku-capture-test), [heroku-backup-test](#heroku-backup-test) & [heroku-restore-test](#heroku-restore-test) commands instead.
 
 `lib-db heroku-pull-test <app_name> <heroku_app_name>`
 
@@ -59,14 +55,15 @@ You can omit the arguments if you have `APP_NAME` and `TEST_HEROKU_APP_NAME` def
 
 This script just prints an error at the moment
 
+### <a name="heroku-capture-test"></a> heroku-capture-test
+
+`lib-db heroku-capture-test <app_name> <heroku_app_name>`
+This script will generate a manual backup in heroku for downloading.
+
 ### <a name="heroku-backup-test"></a> heroku-backup-test
 
 `lib-db heroku-backup-test <app_name> <heroku_app_name>`
-This script will download a backup of the database from the specified heroku app. it can optionally also create a new backup in the remote environment by adding the following to `.lib-db.config`;
-
-```
-STRATEGY=backup
-```
+This script will download a backup of the database from the specified heroku app.
 
 ### <a name="heroku-restore-test"></a> heroku-restore-test
 
