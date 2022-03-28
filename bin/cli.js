@@ -15,6 +15,9 @@ const VALID_COMMANDS = [{
   name: 'heroku-pull-test',
   script: './heroku/db-pull-test.sh'
 }, {
+  name: 'heroku-capture-test',
+  script: './heroku/db-capture-test.sh'
+}, {
   name: 'heroku-restore-test',
   script: './heroku/db-restore-test.sh'
 }, {
