@@ -131,3 +131,8 @@ This will create a migration sql file. By default it will put it in the `migrati
 Alternatively you can define a different location using the `REPO_DIRECTORY` in your `.lib-db.config` file
 
 You can omit the app_name argument if you have `APP_NAME` defined in your `.lib-db.config` file
+
+### No Postgres with Docker usage
+
+`lib-db heroku-pull-test-no-docker`
+Use this command if you are not running the Postgres DB in Docker, but still want to be able to pull from the DB in test environment for you service
