@@ -1,5 +1,7 @@
 #! /bin/bash
 set -e
+set -o errexit   # abort on nonzero exitstatus
+set -o pipefail  # don't hide errors within pipes
 
 app=${1:-$APP_NAME}
 db_container=${3:-$DB_CONTAINER}
@@ -15,11 +17,14 @@ if [ -z "$app" ]
     exit 1
 fi
 
+if [ -z "$db_container" ]
+  then
+    echo -e "${RED}Missing DB_CONTAINER env variable${NO_COLOR}"
+    exit 1
+fi
+
 docker exec -e PGUSER=postgres $db_container dropdb "${app}_development_snapshot" --if-exists
-docker exec -e PGUSER=postgres $db_container createdb -T "${app}_development" "${app}_development_snapshot" 
+docker exec -e PGUSER=postgres $db_container createdb -T "${app}_development" "${app}_development_snapshot"
 
 echo -e "${GREEN}We've made a copy of ${app}_development at ${app}_development_snapshot.
 You can restore it with yarn db:snapshot:restore${NO_COLOR}"
-
-exit 0
-

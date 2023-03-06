@@ -1,5 +1,7 @@
 #! /bin/bash
 set -e
+set -o errexit   # abort on nonzero exitstatus
+set -o pipefail  # don't hide errors within pipes
 
 app=${1:-$APP_NAME}
 db_container=${3:-$DB_CONTAINER}
@@ -14,6 +16,13 @@ if [ -z "$app" ]
     echo -e "${RED}No app_name provided${NO_COLOR}"
     echo "Usage: lib-db create app_name"
     exit 1
+fi
+
+if [ -z "$db_container" ]
+  then
+    echo -e "${RED}Missing DB_CONTAINER env variable${NO_COLOR}"
+    exit 1
+    fi
 fi
 
 if [ -z "$DB" ]
