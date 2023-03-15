@@ -1,5 +1,6 @@
 #! /bin/bash
 set -e
+source $(dirname ${BASH_SOURCE[0]})/utils
 
 app=${1:-$APP_NAME}
 heroku_app=${2:-$TEST_HEROKU_APP_NAME}
@@ -23,14 +24,13 @@ if [ -z "$heroku_app" ]
     exit 1
 fi
 
+copy_netrc_to_docker_container "$db_container"
+verify_if_heroku_is_logged "$db_container"
+
 echo -e "${GREEN}Dropping ${app}_development...${NO_COLOR}"
 docker exec -e PGUSER=postgres $db_container dropdb "${app}_development" --if-exists
 
 echo -e "${GREEN}Pulling test DB from ${heroku_app} to ${app}_development${NO_COLOR}"
-echo -e "This will copy your .netrc to the docker container to allow it to connect to heroku"
-
-docker cp ~/.netrc $db_container:/root
-
 docker exec -e PGUSER=postgres $db_container heroku pg:pull DATABASE_URL "${app}_development" --app $heroku_app
 
 echo -e "${GREEN}We just pulled the test DB to ${app}_development

@@ -1,0 +1,19 @@
+#! /bin/bash
+
+copy_netrc_to_docker_container () {
+  echo -e "This will copy your .netrc to the docker container to allow it to connect to heroku"
+  docker cp ~/.netrc "$1":/root
+}
+
+  # For this function to work the .netrc must have been copied to /root.
+verify_if_heroku_is_logged () {
+  local RED='\033[0;31m'
+  local NO_COLOR='\033[0m'
+
+  docker exec -e PGUSER=postgres "$1" heroku auth:whoami > /dev/null
+
+  if [ $? -ne 0 ]; then
+      echo -e "${RED}You must execute 'heroku login' before running this command.${NO_COLOR}"
+      exit 1
+  fi
+}
