@@ -23,6 +23,13 @@ if [ -z "$heroku_app" ]
     exit 1
 fi
 
+heroku auth:whoami
+
+if [ $? -ne 0 ]; then
+    echo -e "{RED}You must execute 'heroku login' before running this command.${NO_COLOR}"
+    exit 1
+fi
+
 echo -e "${GREEN}Dropping ${app}_development...${NO_COLOR}"
 dropdb --if-exists --port $dev_pg_port "${app}_development"
 
