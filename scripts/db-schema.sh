@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
+set -o errexit   # abort on nonzero exitstatus
+set -o pipefail  # don't hide errors within pipes
 
 app=${1:-$APP_NAME}
-db_container=${3:-$DB_CONTAINER}
+db_container=${2:-$DB_CONTAINER}
 environment=${APP_ENV:-development}
 repo_directory=${REPO_DIRECTORY:-repo}
 export_location=${repo_directory}/schema.sql
@@ -14,7 +16,14 @@ RED='\033[0;31m'
 if [ -z "$app" ]
   then
     echo -e "${RED}No app_name provided${NO_COLOR}"
-    echo "Usage: lib-db schema app_name"
+    echo "Usage: lib-db schema app_name db_container"
+    exit 1
+fi
+
+if [ -z "$db_container" ]
+  then
+    echo -e "${RED}Missing DB_CONTAINER env variable${NO_COLOR}"
+    echo "Usage: lib-db schema app_name db_container"
     exit 1
 fi
 

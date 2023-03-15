@@ -1,8 +1,10 @@
 #! /bin/bash
 set -e
+set -o errexit   # abort on nonzero exitstatus
+set -o pipefail  # don't hide errors within pipes
 
 app=${1:-$APP_NAME}
-db_container=${3:-$DB_CONTAINER}
+db_container=${2:-$DB_CONTAINER}
 
 NO_COLOR='\033[0m'
 GREEN='\033[0;32m'
@@ -11,7 +13,14 @@ RED='\033[0;31m'
 if [ -z "$app" ]
   then
     echo -e "${RED}No app_name provided${NO_COLOR}"
-    echo "Usage: lib-db snapshot-restore app_name"
+    echo "Usage: lib-db snapshot-restore app_name db_container"
+    exit 1
+fi
+
+if [ -z "$db_container" ]
+  then
+    echo -e "${RED}Missing DB_CONTAINER env variable${NO_COLOR}"
+    echo "Usage: lib-db snapshot-restore app_name db_container"
     exit 1
 fi
 
@@ -23,9 +32,6 @@ then
 fi
 
 docker exec -e PGUSER=postgres $db_container dropdb "${app}_development" --if-exists
-docker exec -e PGUSER=postgres $db_container createdb -T "${app}_development_snapshot" "${app}_development" 
+docker exec -e PGUSER=postgres $db_container createdb -T "${app}_development_snapshot" "${app}_development"
 
 echo -e "${GREEN}We've restored ${app}_development from ${app}_development_snapshot.${NO_COLOR}"
-
-exit 0
-

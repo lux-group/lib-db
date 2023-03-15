@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+set -o errexit   # abort on nonzero exitstatus
+set -o pipefail  # don't hide errors within pipes
 
 migrationName=$1
 repoDirectory=${REPO_DIRECTORY:-repo}
