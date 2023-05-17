@@ -23,7 +23,6 @@ if [ -z "$db_container" ]
     echo -e "${RED}Missing DB_CONTAINER env variable${NO_COLOR}"
     echo "Usage: lib-db create app_name db_container"
     exit 1
-    fi
 fi
 
 if [ -z "$DB" ]
