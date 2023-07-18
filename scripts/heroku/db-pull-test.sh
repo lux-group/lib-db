@@ -27,11 +27,36 @@ fi
 copy_netrc_to_docker_container "$db_container"
 verify_if_heroku_is_logged "$db_container"
 
+# Parse the options
+while [[ $# -gt 0 ]]; do
+  echo "Parsing $1"
+  case "$1" in
+    --exclude-tables*)
+      if [[ "$1" == --exclude-tables=* ]]; then
+        exclude_tables=${1#*=}
+      else
+        shift
+        exclude_tables=$1
+      fi
+      ;;
+    *)
+      echo "Unknown option: $1"
+      ;;
+  esac
+  shift
+done
+
 echo -e "${GREEN}Dropping ${app}_development...${NO_COLOR}"
 docker exec -e PGUSER=postgres $db_container dropdb "${app}_development" --if-exists
 
 echo -e "${GREEN}Pulling test DB from ${heroku_app} to ${app}_development${NO_COLOR}"
-docker exec -e PGUSER=postgres $db_container heroku pg:pull DATABASE_URL "${app}_development" --app $heroku_app
+
+if [[ -n $exclude_tables ]]; then
+  echo "Excluding tables: $exclude_tables"
+  docker exec -e PGUSER=postgres $db_container heroku pg:pull DATABASE_URL "${app}_development" --app $heroku_app --exclude-table-data $exclude_tables
+else
+  docker exec -e PGUSER=postgres $db_container heroku pg:pull DATABASE_URL "${app}_development" --app $heroku_app
+fi
 
 echo -e "${GREEN}We just pulled the test DB to ${app}_development
 
