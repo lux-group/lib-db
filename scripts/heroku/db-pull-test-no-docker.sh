@@ -12,7 +12,7 @@ RED='\033[0;31m'
 exclude_tables_param=""
 if [ -n "$EXCLUDE_TABLES" ]
   then
-  exclude_tables_param="--exclude-table-data=\"$EXCLUDE_TABLES\""
+    exclude_tables_param="--exclude-table-data=\"$EXCLUDE_TABLES\""
 fi
 
 if [ -z "$app" ]
