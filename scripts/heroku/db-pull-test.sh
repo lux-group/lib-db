@@ -18,16 +18,16 @@ fi
 
 if [ -z "$app" ]
   then
-  echo -e "${RED}No app_name provided${NO_COLOR}"
-  echo "Usage: lib-db heroku-pull-test app_name heroku_app_name"
-  exit 1
+    echo -e "${RED}No app_name provided${NO_COLOR}"
+    echo "Usage: lib-db heroku-pull-test app_name heroku_app_name"
+    exit 1
 fi
 
 if [ -z "$heroku_app" ]
   then
-  echo -e "${RED}No heroku_app_name provided${NO_COLOR}"
-  echo "Usage: lib-db heroku-pull-test app_name heroku_app_name"
-  exit 1
+    echo -e "${RED}No heroku_app_name provided${NO_COLOR}"
+    echo "Usage: lib-db heroku-pull-test app_name heroku_app_name"
+    exit 1
 fi
 
 copy_netrc_to_docker_container "$db_container"
