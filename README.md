@@ -19,6 +19,7 @@ This file format should be key value like below
 APP_NAME=my_app
 TEST_HEROKU_APP_NAME=my_heroku_app_name
 DB_CONTAINER=postgres13
+EXCLUDE_TABLES="big_table;big_table_2;personal\*"
 ```
 
 ## Usage
@@ -48,6 +49,8 @@ So for example if you do the following
 It will pull down the database from the heroku app named `test-svc-users` into a local db named `svc_users_development`
 
 You can omit the arguments if you have `APP_NAME` and `TEST_HEROKU_APP_NAME` defined in your `.lib-db.config` file
+
+You can omit table data by setting the `EXCLUDE_TABLES` env var in `.lib-db.config` this is a `;` seperated list of table names. Make sure you quote this list so the `;` character is escaped. If you are using a wildcard `*` this will need to be explicitly escaped
 
 ### heroku-pull-prod
 
