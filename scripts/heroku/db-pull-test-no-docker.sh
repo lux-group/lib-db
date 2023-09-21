@@ -9,6 +9,12 @@ NO_COLOR='\033[0m'
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 
+exclude_tables_param=""
+if [ -n "$EXCLUDE_TABLES" ]
+  then
+  exclude_tables_param="--exclude-table-data=\"$EXCLUDE_TABLES\""
+fi
+
 if [ -z "$app" ]
   then
     echo -e "${RED}No app_name provided${NO_COLOR}"
@@ -34,7 +40,7 @@ echo -e "${GREEN}Dropping ${app}_development...${NO_COLOR}"
 dropdb --if-exists --port $dev_pg_port "${app}_development"
 
 echo -e "${GREEN}Pulling test DB from ${heroku_app} to ${app}_development${NO_COLOR}"
-heroku pg:pull DATABASE_URL "postgresql://@localhost:$dev_pg_port/${app}_development" --app $heroku_app
+heroku pg:pull DATABASE_URL "postgresql://@localhost:$dev_pg_port/${app}_development" --app $heroku_app $exclude_tables_param
 
 echo -e "${GREEN}We just pulled the test DB to ${app}_development
 You might like to run yarn db:snapshot, so you can later restore this fresh test DB without re-downloading it."
